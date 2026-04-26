@@ -57,4 +57,32 @@ Liczba warstw: 1 (z tego wzgledu że zdecydowana większosć poszła z cacha)
  => => naming to docker.io/library/aplikacja:v1.0.0                                                                0.0s
  => => unpacking to docker.io/library/aplikacja:v1.0.0
 ```
+___
+**ZADANIA DODATKOWE**
+Przeskanowanie Scoutem obrazu:
+```
+docker scout quickview aplikacja:v1.0.0
+    i New version 1.20.4 available (installed version is 1.20.1) at https://github.com/docker/scout-cli
+    ✓ Image stored for indexing
+    ✓ Indexed 249 packages
+    ✓ Provenance obtained from attestation
 
+    i Base image was auto-detected. To get more accurate results, build images with max-mode provenance attestations.
+      Review docs.docker.com ↗ for more information.
+
+ Target             │  aplikacja:v1.0.0  │    0C     3H    11M     1L  
+   digest           │  7e9690baaea5      │                             
+ Base image         │  node:25-alpine    │    0C     1H     3M     0L  
+ Updated base image │  node:24-alpine    │    0C     1H     3M     0L  
+                    │                    │                             
+
+What's next:
+    View vulnerabilities → docker scout cves aplikacja:v1.0.0
+    View base image update recommendations → docker scout recommendations aplikacja:v1.0.0
+    Include policy results in your quickview by supplying an organization → docker scout quickview aplikacja:v1.0.0 --org <organization>
+```
+W aplikacji wykryto 3 wysokie podatnosci:
+- `CVE-2026-3805`, podatność tyczy się curla. Wystepuje w momencie jesli wystąpia dwa requesty SMB- w nasyzm przypakdu nie korzystamyz  protokołu SMB stąd podatnośc nas nie dotyczy 
+- `CVE-2026-33671`, luka dotyczy `picomatch`, w programie nie użyto tejże biblioteki
+- `CVE-2026-27135` luka z HTTP, nie została wypuszczona naprawiona wersja
+Polecenie `docker scout recommendations aplikacja:v1.0.0` zaproponowało aktualizacje obrazu `alpine` do wersji 23 i 22, natomiat te wersje również posiadają te same "wysokie" podatnosci
