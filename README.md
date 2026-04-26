@@ -85,4 +85,33 @@ W aplikacji wykryto 3 wysokie podatnosci:
 - `CVE-2026-3805`, podatność tyczy się curla. Wystepuje w momencie jesli wystąpia dwa requesty SMB- w nasyzm przypakdu nie korzystamyz  protokołu SMB stąd podatnośc nas nie dotyczy 
 - `CVE-2026-33671`, luka dotyczy `picomatch`, w programie nie użyto tejże biblioteki
 - `CVE-2026-27135` luka z HTTP, nie została wypuszczona naprawiona wersja
+
 Polecenie `docker scout recommendations aplikacja:v1.0.0` zaproponowało aktualizacje obrazu `alpine` do wersji 23 i 22, natomiat te wersje również posiadają te same "wysokie" podatnosci
+
+Stworzenie buildera:
+```
+docker buildx create --name builder --driver docker-container --bootstrap
+[+] Building 55.1s (1/1) FINISHED                                                                                       
+ => [internal] booting buildkit                                                                                   55.1s
+ => => pulling image moby/buildkit:buildx-stable-1                                                                54.7s
+ => => creating container buildx_buildkit_builder0                                                                 0.4s
+builder
+```
+Budowanie:
+```
+docker buildx build --platform linux/amd64,linux/arm64 --tag sabnaria/aplikacja:v1.0.0 --push .
+[+] Building 13.3s (7/33)                                                                      docker-container:builder
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 1.40kB
+```
+Sprawdzenie manifestu:
+```
+  Name:        docker.io/sabnaria/aplikacja:v1.0.0@sha256:565dedce3069291ead002abe78079b4450cdf16d2904f06c35e5af9b83885d8d
+  MediaType:   application/vnd.oci.image.manifest.v1+json
+  Platform:    linux/amd64
+               
+  Name:        docker.io/sabnaria/aplikacja:v1.0.0@sha256:9b0eefa0dc05788cc8420e98d03ce88ec16d9358692b8e8ca799ca9aab713003
+  MediaType:   application/vnd.oci.image.manifest.v1+json
+  Platform:    linux/arm64
+```
+Manifest zawiera deklaracje dla dwóch platform sprzętowych 
