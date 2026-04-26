@@ -5,4 +5,56 @@ Wybór miasta został zaprogramowany w JS (Node). Plik `server.js` zawiera kod w
 
 ___
 **Zadanie 2**
-W pliku Dockerfile znajduje sie kod wraz zkomenatrzami
+W pliku Dockerfile znajduje sie kod wraz z komentarzami 
+___
+**Zadanie 3**
+Polecenie na uruchomienie procesu budowania obrazu 
+```
+docker build -t aplikacja:v1.0.0 .
+```
+Polecenie na uruchomienie zbudowanego obrazu
+```
+docker run -d --name aplikacja -p 3000:3000 aplikacja:v1.0.0
+```
+Uzyskanie logów z informacjami 
+```
+docker logs aplikacja
+Autor aplikacji: Martyna Debowczyk
+Data uruchomienia: 4/26/2026
+Aplikacja działa na porcie 3000
+```
+Liczba warstw: 1 (z tego wzgledu że zdecydowana większosć poszła z cacha)
+```
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 1.40kB                                                                             0.0s
+ => [internal] load metadata for docker.io/library/node:alpine3.23                                                 1.2s
+ => [auth] library/node:pull token for registry-1.docker.io                                                        0.0s
+ => [internal] load .dockerignore                                                                                  0.0s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load build context                                                                                  0.0s
+ => => transferring context: 120B                                                                                  0.0s
+ => [prod 1/7] FROM docker.io/library/node:alpine3.23@sha256:bdf2cca6fe3dabd014ea60163eca3f0f7015fbd5c7ee1b0e9ccb  0.0s
+ => => resolve docker.io/library/node:alpine3.23@sha256:bdf2cca6fe3dabd014ea60163eca3f0f7015fbd5c7ee1b0e9ccb4ced6  0.0s
+ => CACHED [prod 2/7] RUN apk add --update --no-cache curl &&     rm -rf /etc/apk/cache                            0.0s
+ => CACHED [prod 3/7] RUN mkdir -p /home/node/app                                                                  0.0s
+ => CACHED [prod 4/7] WORKDIR /home/node/app                                                                       0.0s
+ => CACHED [app_build 1/7] ADD alpine-minirootfs-3.23.3-aarch64.tar /                                              0.0s
+ => CACHED [app_build 2/7] RUN apk update &&     apk upgrade &&     apk add --no-cache nodejs npm &&     rm -rf /  0.0s
+ => CACHED [app_build 3/7] RUN addgroup -S node && adduser -S node -G node                                         0.0s
+ => CACHED [app_build 4/7] WORKDIR /home/node/app                                                                  0.0s
+ => CACHED [app_build 5/7] COPY --chown=node:node package.json ./package.json                                      0.0s
+ => CACHED [app_build 6/7] RUN npm install                                                                         0.0s
+ => CACHED [app_build 7/7] COPY --chown=node:node server.js ./server.js                                            0.0s
+ => CACHED [prod 5/7] COPY --from=app_build --chown=node:node /home/node/app/package.json ./                       0.0s
+ => CACHED [prod 6/7] COPY --from=app_build --chown=node:node /home/node/app/node_modules ./node_modules           0.0s
+ => CACHED [prod 7/7] COPY --from=app_build --chown=node:node /home/node/app/server.js ./                          0.0s
+ => exporting to image                                                                                             0.0s
+ => => exporting layers                                                                                            0.0s
+ => => exporting manifest sha256:198a0a5f2baa4248415629cc39a69873e116c8455821e6931f791e2f1feba1af                  0.0s
+ => => exporting config sha256:791c352322d4c92a5cbcb680a86a9f77dfeee149ca514648bcd5bb1cdba6c4cb                    0.0s
+ => => exporting attestation manifest sha256:5c7fc3ef83a76707ee21ad9055fb0d4e5e5b09144e14b4feb8475b0d2be3d359      0.0s
+ => => exporting manifest list sha256:7e9690baaea5a8fe60b2a12979a1958eea301e09853a419b510fc4ed8b55d901             0.0s
+ => => naming to docker.io/library/aplikacja:v1.0.0                                                                0.0s
+ => => unpacking to docker.io/library/aplikacja:v1.0.0
+```
+
